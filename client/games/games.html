@@ -1,3 +1,9 @@
 <template name='games'>
-  {{#if Template.subscriptionReady}} {{else}} {{> spinner}} {{/if}}
+  {{#requireLogin}}
+    {{#if Template.subscriptionsReady}}
+      <h2>Games</h2>
+    {{else}}
+      {{> spinner}}
+    {{/if}}
+  {{/requireLogin}}
 </template>
