@@ -1,5 +1,3 @@
 <template name='games'>
-  {{#if Template.subscriptionReady}}
-  {{else}}
-  {{/if}}
+  {{#if Template.subscriptionReady}} {{else}} {{> spinner}} {{/if}}
 </template>
