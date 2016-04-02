@@ -3,16 +3,17 @@ Template.games.onCreated(function() {
   this.subscribe('games');
 });
 
-Template.games.helpers(function() {
+Template.games.helpers({
   possibleOpponents: function() {
-    var users = Meteor.user();
+    var user = Meteor.user();
     var friends = user.profile.friends || [];
 
-    Games.find({ result: null }).forEach(function (games) {
-      var color = (games.w === user.id) : 'b' : 'w';
+    Games.find({result: null}).forEach(function(games) {
+      var color = (games.w === user._id) ? 'b' : 'w';
+      var idx = friends.indexOf(game[color])
 
-      games[color]
+      if (idx > 1) friends.splice(idx, 1);
     })
-
+        return friends.length ? Meteor.users.find({ _id: { $in: friends}}) : null;
   }
 });
