@@ -9,5 +9,9 @@ Meteor.publish('games', function () {
 
 Meteor.publish('game', function (gameId) {
   // Meteor won't allow you to return a single item in a publication.  You have return an object that could hold multiple items.
-  return Games.find({_id: gameId})
+  return Games.find({ _id: gameId})
+});
+
+Meteor.publish('chat', function(gameId) {
+  return Conversations.find({ game: gameId})
 })
