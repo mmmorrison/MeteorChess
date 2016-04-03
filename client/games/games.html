@@ -30,7 +30,7 @@
             <button id='accept' class='btn btn-xs btn-success'> Accept </button>
             <button id='decline' class='btn btn-xs btn-warning'> Decline </button>
             {{else}} Game betweeen {{username w}} and {{username b}} (Waiting for confirmation by {{username needsConfirmation}}) {{/if}} {{else}}
-            <a href='/games/{{_id}}'> Game betweeen {{username w}} and {{username b}} </a> {{/if}}
+            <a href='/game/{{_id}}'> Game betweeen {{username w}} and {{username b}} </a> {{/if}}
         </li>
         {{/each}}
     </ul>
@@ -39,7 +39,7 @@
     <ul>
         {{#each archivedGames}}
         <li>
-            <a href='/games/{{_id}}'> {{username w}} vs. {{username b}}  ({{result}})</a>
+            <a href='/game/{{_id}}'> {{username w}} vs. {{username b}}  ({{result}})</a>
         </li>
         {{/each}}
     </ul>

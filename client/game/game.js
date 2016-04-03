@@ -107,6 +107,20 @@ function makeRows(board, b) {
             console.log(n);
             console.log(cell);
             var n = parseInt(cell);
-        })))
+
+            if (isNan(n)) return makeCell(cell, rank, file++)
+
+            //return n which is the empty cell
+        })
+      ))
     })
+}
+
+function makeCell(val, rank, file) {
+  return {
+    piece: val,
+    img: pieces[val],
+    cell: String.fromCharCode(97 + file) + rank
+
+  }
 }
