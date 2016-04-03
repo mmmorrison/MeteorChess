@@ -22,7 +22,7 @@ Template.game.helpers({
     return getUsername(result) + ' won!'
   },
 
-  movies: function(){
+  moves: function(){
     return pair(getMoves()).map(function(arr) {
       return arr[0] + ' ' + (arr[1] || '');
     });
@@ -32,9 +32,6 @@ Template.game.helpers({
     var chess = new Chess();
     getMoves().forEach(chess.move.bind(chess));
     return makeRows(chess.fen(), getGame().b)
-    //fen Forsyth-Edwards Notation for chess moves
+    //fen = Forsyth-Edwards Notation for chess moves
   }
-})
-
-
-console.log(getGame());
+});
