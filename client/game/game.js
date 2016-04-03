@@ -35,3 +35,32 @@ Template.game.helpers({
             //fen = Forsyth-Edwards Notation for chess moves
     }
 });
+
+function pair(arr) {
+    var i = 0;
+    var ret = [];
+
+    while (i < arr.length) ret.push([arr[i++], arr[i++]]);
+    return ret;
+}
+var selectedData = null;
+var selectedNode = null;
+
+Template.game.events(evt) {
+    'click td': function(evt) {
+        var data = getGame();
+
+        if (data[data.board.split(' ')[1]] !== Meteor.userId()) return;
+
+        var chess = new Chess(data.board);
+
+        if (selectedData) {
+            if (selectedData.cell === this.cell) {
+                deselect();
+            } else {
+                var move = canMove(selectedData.cell, this.cell)
+            }
+        }
+    }
+}
+}
