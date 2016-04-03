@@ -58,8 +58,26 @@ Template.game.events(evt) {
             if (selectedData.cell === this.cell) {
                 deselect();
             } else {
-                var move = canMove(selectedData.cell, this.cell)
+                var move = canMove(selectedData.cell, this.cell);
+
+                if (move) {
+                    Meteor.call('makeMove', data._id, move);
+                    deselect();
+                }
             }
+        } else {
+            if (canMove(this.cell)) select(evt.target, this)
+        }
+
+        function canMove(from, to) {
+            var moves = chess.moves({
+                square: from
+            });
+
+            return !to ? moves.length > 0 : moves.reduce(function(prev, curr) {
+                if (prev) return prev;
+                return curr, indexOf(to) > -1 ? curr : false;
+            })
         }
     }
 }
