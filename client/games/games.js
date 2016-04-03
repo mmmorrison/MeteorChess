@@ -31,14 +31,26 @@ Template.games.helpers({
   username: getUsername,
   byMe: function() {
     return this.needsConfirmation && this.needsConfirmation === Meteor.userId();
+  },
+
+  opponent: function() {
+    return (this.w === Meteor.userId()) ? this.b : this.w
   }
 });
 
 Template.games.events({
-  'submit form': function (evt) {
+  'submit form': function(evt) {
     evt.preventDefault();
     Meteor.call('createGame', evt.target.color.value, evt.target.otherPlayer.value)
-  }
-});
+  },
 
-console.log(Template.games);
+  'click #accept': function(evt) {
+    Meteor.call('acceptGame', this._id)
+  },
+
+  'click #decline': function(evt) {
+    Meteor.call('declineGame', this._id)
+  },
+
+
+});
