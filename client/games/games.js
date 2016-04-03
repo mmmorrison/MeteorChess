@@ -26,6 +26,11 @@ Template.games.helpers({
       if (game.result != 'draw') game.result = getUsername(game.result) + ' won';
       return game
     })
+  },
+
+  username: getUsername,
+  byMe: function() {
+    return this.needsConfirmation && this.needsConfirmation === Meteor.userId();
   }
 });
 
@@ -35,3 +40,5 @@ Template.games.events({
     Meteor.call('createGame', evt.target.color.value, evt.target.otherPlayer.value)
   }
 });
+
+console.log(Template.games);

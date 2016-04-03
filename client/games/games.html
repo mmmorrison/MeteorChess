@@ -43,6 +43,16 @@
              </li>
          {{/each}}
      </ul>
+
+      <h2>Archived Games</h2>
+      <ul>
+        {{#each archivedGames}}
+        <li>
+          <a href='/games/{{_id}}'> {{username w}} vs. {{username b}}  ({{result}})</a>
+        </li>
+        {{/each}}
+      </ul>
+
     {{else}}
       {{> spinner}}
     {{/if}}
