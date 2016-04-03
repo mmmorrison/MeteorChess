@@ -43,42 +43,68 @@ function pair(arr) {
     while (i < arr.length) ret.push([arr[i++], arr[i++]]);
     return ret;
 }
+
 var selectedData = null;
 var selectedNode = null;
 
 Template.game.events(evt) {
-    'click td': function(evt) {
-        var data = getGame();
+'click td': function(evt) {
+    var data = getGame();
 
-        if (data[data.board.split(' ')[1]] !== Meteor.userId()) return;
+    if (data[data.board.split(' ')[1]] !== Meteor.userId()) return;
 
-        var chess = new Chess(data.board);
+    var chess = new Chess(data.board);
 
-        if (selectedData) {
-            if (selectedData.cell === this.cell) {
-                deselect();
-            } else {
-                var move = canMove(selectedData.cell, this.cell);
-
-                if (move) {
-                    Meteor.call('makeMove', data._id, move);
-                    deselect();
-                }
-            }
+    if (selectedData) {
+        if (selectedData.cell === this.cell) {
+            deselect();
         } else {
-            if (canMove(this.cell)) select(evt.target, this)
-        }
+            var move = canMove(selectedData.cell, this.cell);
 
-        function canMove(from, to) {
-            var moves = chess.moves({
-                square: from
-            });
-
-            return !to ? moves.length > 0 : moves.reduce(function(prev, curr) {
-                if (prev) return prev;
-                return curr, indexOf(to) > -1 ? curr : false;
-            })
+            if (move) {
+                Meteor.call('makeMove', data._id, move);
+                deselect();
+            }
         }
+    } else {
+        if (canMove(this.cell)) select(evt.target, this)
     }
+
+    function canMove(from, to) {
+        var moves = chess.moves({
+            square: from
+        });
+
+        return !to ? moves.length > 0 : moves.reduce(function(prev, curr) {
+            if (prev) return prev;
+            return curr, indexOf(to) > -1 ? curr : false;
+        }, false);
+    }
+}
+});
+
+function select(node, data) {
+    selectedNode = node;
+    selectedData = data;
+    selectedNode.classList.add('selected');
+}
+
+function deselect() {
+    selectedNode.classList.remove('selected');
+    selectedNode = null;
+    selectedData = null;
+}
+
+function makeRows(board, b) {
+    var rows = board.split(' ')[0].split('/');
+
+    var data = rows.map(function(row, i) {
+        var rank = 8 - i; //row number
+        var file = 0; //column
+
+        return [].concat.apply([], row.split(''.map(function(cell) {
+
+        })))
+    })
 }
 }
