@@ -1,4 +1,5 @@
-Template.game.OnCreated(function() {
+Template.game.onCreated(function() {
+
     this.autorun(() => {
         //autorun() will rerun the function whenever the value of the reactive function is changed.
         this.subscribe('users');
