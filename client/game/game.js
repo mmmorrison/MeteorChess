@@ -47,40 +47,40 @@ function pair(arr) {
 var selectedData = null;
 var selectedNode = null;
 
-Template.game.events(evt) {
-'click td': function(evt) {
-    var data = getGame();
+Template.game.events({
+    'click td': function(evt) {
+        var data = getGame();
 
-    if (data[data.board.split(' ')[1]] !== Meteor.userId()) return;
+        if (data[data.board.split(' ')[1]] !== Meteor.userId()) return;
 
-    var chess = new Chess(data.board);
+        var chess = new Chess(data.board);
 
-    if (selectedData) {
-        if (selectedData.cell === this.cell) {
-            deselect();
-        } else {
-            var move = canMove(selectedData.cell, this.cell);
-
-            if (move) {
-                Meteor.call('makeMove', data._id, move);
+        if (selectedData) {
+            if (selectedData.cell === this.cell) {
                 deselect();
+            } else {
+                var move = canMove(selectedData.cell, this.cell);
+
+                if (move) {
+                    Meteor.call('makeMove', data._id, move);
+                    deselect();
+                }
             }
+        } else {
+            if (canMove(this.cell)) select(evt.target, this)
         }
-    } else {
-        if (canMove(this.cell)) select(evt.target, this)
-    }
 
-    function canMove(from, to) {
-        var moves = chess.moves({
-            square: from
-        });
+        function canMove(from, to) {
+            var moves = chess.moves({
+                square: from
+            });
 
-        return !to ? moves.length > 0 : moves.reduce(function(prev, curr) {
-            if (prev) return prev;
-            return curr, indexOf(to) > -1 ? curr : false;
-        }, false);
+            return !to ? moves.length > 0 : moves.reduce(function(prev, curr) {
+                if (prev) return prev;
+                return curr, indexOf(to) > -1 ? curr : false;
+            }, false);
+        }
     }
-}
 });
 
 function select(node, data) {
@@ -103,8 +103,9 @@ function makeRows(board, b) {
         var file = 0; //column
 
         return [].concat.apply([], row.split(''.map(function(cell) {
-
+            console.log(n);
+            console.log(cell);
+            var n = parseInt(cell);
         })))
     })
-}
 }

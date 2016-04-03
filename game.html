@@ -1,13 +1,12 @@
 <template name='game'>
-  {{#if Template.suscriptionsReady}}
-  <div class="row">
-    <div class="col-sm-4">{{>board rows}}</div>
+    {{#if Template.suscriptionsReady}}
+    <div class="row">
+        <div class="col-sm-4">{{>board rows}}</div>
 
-    <div class="col-sm-4">
-      {{#if result}}
-      <h2>{{result}}</h2>
-      {{else}}
-      <h2>Currently, {{currentTurn}}'s turn</h2>
+        <div class="col-sm-4">
+            {{#if result}}
+            <h2>{{result}}</h2> {{else}}
+            <h2>Currently, {{currentTurn}}'s turn</h2>
+        </div>
     </div>
-  </div>
 </template>
