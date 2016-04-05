@@ -37,12 +37,12 @@ Template.game.helpers({
     }
 });
 
-function pair(arr) {
-    var i = 0;
-    var ret = [];
+function pair (arr) {
+  var i = 0;
+  var ret = [];
 
-    while (i < arr.length) ret.push([arr[i++], arr[i++]]);
-    return ret;
+  while(i < arr.length) ret.push([arr[i++], arr[i++]]);
+  return ret;
 }
 
 var selectedData = null;
@@ -103,24 +103,74 @@ function makeRows(board, b) {
         var rank = 8 - i; //row number
         var file = 0; //column
 
-        return [].concat.apply([], row.split(''.map(function(cell) {
-            console.log(n);
-            console.log(cell);
+        return [].concat.apply([], row.split('').map(function(cell) {
             var n = parseInt(cell);
 
             if (isNan(n)) return makeCell(cell, rank, file++)
 
-            //return n which is the empty cell
-        })
-      ))
-    })
+            return Array.apply(null, Array(n)).map(function(cell) {
+              return makeCell(cell, rank, file++)
+              //return n which is the empty cell
+            })
+      }))
+    });
+
+    if (b === Meteor.userId()){
+      data.reverse();
+
+      data = data.map(function(row) {
+        return row.reverse();
+      })
+    }
+    return data
 }
 
 function makeCell(val, rank, file) {
   return {
     piece: val,
-    img: pieces[val],
+    img: pieces[val] || '',
     cell: String.fromCharCode(97 + file) + rank
-
   }
-}
+};
+
+function getGame() {
+  return Games.findOne(FlowRouter.getParam('id'));
+};
+
+function getMoves() {
+  var chess = new Chess();
+  chess.load_pgn(getGame().moves);
+  var moves = chess.history();
+
+  if (Session.get('stepping')){
+    if (moves.length < Session.get('moveIndex')){
+      Session.set('moveIndex', moves.length);
+    }
+    moves = moves.slice(0, Session.get('moveIndex'))
+  }
+  return moves
+};
+
+Template.stepper.helpers({
+  canStep: function (result) {
+    return result && !Session.get('stepping')
+  },
+
+  stepping: function (result){
+    return Session.get('stepping');
+  }
+});
+
+Template.stepper.events({
+  'click #step': function (evt) {
+    Session.set('stepping', true);
+    Session.set('moveIndex', 0);
+  },
+  'click #prev': function (evt) {
+    var idx = Session.get('moveIndex');
+    Session.set('moveIndex', idx <= 0 ? 0 : idx -1);
+  },
+  'click #next': function (evt) {
+    Session.set('moveIndex', Session.get('moveIndex') + 1);
+  }
+})
