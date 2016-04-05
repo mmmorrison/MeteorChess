@@ -72,11 +72,6 @@ Template.game.events({
         return curr.indexOf(to) > -1 ? curr : false;
       }, false);
     }
-
-    // --- no,
-    // ---- can the piece on first cell move to the cell?
-    // ----- yes, make move
-    // ----- no, ignore
   }
 });
 
@@ -138,14 +133,14 @@ function getMoves() {
   chess.load_pgn(getGame().moves);
   var moves = chess.history();
 
-  if (Session.get('stepping')) {
+  // if (Session.get('stepping')) {
+  //
+  //   if (moves.length < Session.get('moveIndex')) {
+  //     Session.set('moveIndex', moves.length);
+  //   }
 
-    if (moves.length < Session.get('moveIndex')) {
-      Session.set('moveIndex', moves.length);
-    }
-
-    moves = moves.slice(0, Session.get('moveIndex'));
-  }
+    // moves = moves.slice(0, Session.get('moveIndex'));
+  // }
 
   return moves;
 }
@@ -154,9 +149,9 @@ Template.stepper.helpers({
   canStep: function (result) {
     return result && !Session.get('stepping');
   },
-  stepping: function () {
-    return Session.get('stepping');
-  }
+  // stepping: function() {
+  //   return Session.get('stepping');
+  // }
 });
 
 Template.stepper.events({
